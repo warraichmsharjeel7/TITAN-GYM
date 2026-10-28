@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ur" class="dark scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TITAN GYM | Ultimate Iron & Fitness Store</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Poppins:wght@300;400;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body
+    class="bg-gym-bg text-gym-text transition-colors duration-300 selection:bg-gym-neon selection:text-black min-h-screen flex flex-col justify-between">
+
+    <!-- Toast Notification -->
+    <div id="toast-container" class="fixed top-24 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div
+                    class="w-11 h-11 rounded-xl bg-gym-neon flex items-center justify-center text-black text-xl font-extrabold shadow-lg shadow-gym-neon/30 group-hover:rotate-12 transition-transform duration-300">
+                    <i class="fa-solid fa-dumbbell"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-heading text-2xl font-black tracking-wider flex items-center">
+                        TITAN<span class="text-gym-neon">GYM</span>
+                    </span>
+                    <span class="text-[9px] uppercase tracking-[0.25em] text-gray-400 font-semibold -mt-1">Iron &
+                        Fitness Lab</span>
+                </div>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 font-medium text-sm tracking-wide">
+                <a href="#hero" class="hover:text-gym-neon transition-colors">HOME</a>
+                <a href="#categories" class="hover:text-gym-neon transition-colors">CATEGORIES</a>
+                <a href="#products" class="hover:text-gym-neon transition-colors">PRODUCTS</a>
+                <a href="#tech-3d" class="hover:text-gym-neon transition-colors">3D MACHINE</a>
+                <a href="#reviews" class="hover:text-gym-neon transition-colors">REVIEWS</a>
+            </div>
+
+            <div class="flex items-center gap-4 sm:gap-6">
+                <button id="theme-toggle-btn" onclick="toggleTheme()"
+                    class="p-2.5 rounded-full border border-gym-border text-gym-neon hover:bg-gym-neon/10 transition-all animate-pulse-slow"
+                    title="Toggle Theme">
+                    <i id="theme-icon" class="fa-solid fa-sun text-lg"></i>
+                </button>
+
+                <button id="btn-open-cart"
+                    class="relative bg-gym-neon text-black px-4 py-2.5 rounded-full font-extrabold text-xs flex items-center gap-2 hover:brightness-110 transition-all shadow-lg shadow-gym-neon/30 hover:scale-105">
+                    <i class="fa-solid fa-cart-shopping text-sm"></i>
+                    <span>Cart</span>
+                    <span id="cart-badge"
+                        class="bg-black text-gym-neon text-[10px] font-bold px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Slide-out Cart Drawer (With Delete Button) -->
+    <div id="cart-drawer-overlay"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    </div>
+    <div id="cart-drawer"
+        class="fixed top-0 right-0 h-full w-full sm:w-96 glass-panel border-l border-gym-border z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-5 border-b border-gym-border flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-dumbbell text-gym-neon"></i>
+                <h3 class="font-heading text-lg font-bold">Your Fitness Cart</h3>
+            </div>
+            <button id="btn-close-cart" class="text-gray-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+        <div class="p-5 border-t border-gym-border bg-gym-card/60 space-y-4">
+            <div class="flex justify-between text-sm text-gray-400">
+                <span>Total</span>
+                <span id="cart-total" class="text-gym-neon font-bold text-base">$0.00</span>
+            </div>
+            <button onclick="checkout()"
+                class="w-full bg-gym-neon text-black py-3 rounded-xl font-black uppercase tracking-wider text-xs hover:brightness-110 transition-all shadow-lg shadow-gym-neon/20 hover:scale-105">
+                Proceed To Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-screen pt-32 pb-16 flex items-center overflow-hidden">
+        <div id="hero-glow"
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full bg-gym-neon/20 blur-[150px] pointer-events-none animate-pulse-slow">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gym-neon/40 bg-gym-neon/10 text-gym-neon text-xs font-semibold uppercase tracking-widest animate-bounce">
+                        <i class="fa-solid fa-fire text-sm"></i> Hardcore Bodybuilding Gear
+                    </div>
+
+                    <h1
+                        class="font-heading text-4xl sm:text-6xl xl:text-7xl font-black uppercase tracking-tight leading-none">
+                        TRANSFORM YOUR <br>
+                        <span class="text-gradient-neon">BODY & MIND.</span>
+                    </h1>
+
+                    <p class="text-gray-400 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Professional bodybuilding equipment, heavy dumbbells, pure protein isolates, and intense workout
+                        accessories designed for maximum muscle growth.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#products"
+                            class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gym-neon text-black font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-gym-neon/30 flex items-center justify-center gap-3 group hover:scale-105 animate-pulse">
+                            <span>EXPLORE  PRODUCTS</span>
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 relative flex justify-center items-center">
+                    <div class="relative w-full max-w-lg aspect-square flex items-center justify-center">
+                        <div class="absolute inset-0 border border-gym-border rounded-full animate-spin-slow"></div>
+                        <div class="absolute inset-8 border border-dashed border-gym-neon/30 rounded-full"></div>
+
+                        <img id="hero-img"
+                            src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80"
+                            alt="Bodybuilding Pro"
+                            class="w-full max-h-[420px] object-contain drop-shadow-[0_20px_35px_rgba(204,255,0,0.25)] filter transition-all duration-700 transform hover:scale-110 hover:rotate-2 animate-float cursor-pointer rounded-2xl">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section id="categories" class="py-20 relative border-t border-gym-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-gym-neon font-bold text-xs uppercase tracking-widest">Gear Categories</span>
+                <h2 class="font-heading text-3xl sm:text-5xl font-black mt-1">EXPLORE FITNESS CATEGORIES</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div
+                    class="glass-panel rounded-2xl p-6 border border-gym-border hover:border-gym-neon transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:shadow-gym-neon/20 cursor-pointer group card-glow">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gym-neon/10 flex items-center justify-center text-gym-neon mb-4 group-hover:scale-125 group-hover:rotate-6 transition-transform">
+                        <i class="fa-solid fa-dumbbell text-2xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold">Free Weights</h3>
+                    <p class="text-xs text-gray-400 mt-2">Dumbbells, Barbells & Olympic Plates.</p>
+                </div>
+                <div
+                    class="glass-panel rounded-2xl p-6 border border-gym-border hover:border-gym-neon transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:shadow-gym-neon/20 cursor-pointer group card-glow">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gym-neon/10 flex items-center justify-center text-gym-neon mb-4 group-hover:scale-125 group-hover:rotate-6 transition-transform">
+                        <i class="fa-solid fa-bottle-droplet text-2xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold">Supplements</h3>
+                    <p class="text-xs text-gray-400 mt-2">Whey Protein, Creatine & Pre-workouts.</p>
+                </div>
+                <div
+                    class="glass-panel rounded-2xl p-6 border border-gym-border hover:border-gym-neon transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:shadow-gym-neon/20 cursor-pointer group card-glow">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gym-neon/10 flex items-center justify-center text-gym-neon mb-4 group-hover:scale-125 group-hover:rotate-6 transition-transform">
+                        <i class="fa-solid fa-gears text-2xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold">Heavy Machinery</h3>
+                    <p class="text-xs text-gray-400 mt-2">Treadmills, Cable Crossover & Racks.</p>
+                </div>
+                <div
+                    class="glass-panel rounded-2xl p-6 border border-gym-border hover:border-gym-neon transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl hover:shadow-gym-neon/20 cursor-pointer group card-glow">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gym-neon/10 flex items-center justify-center text-gym-neon mb-4 group-hover:scale-125 group-hover:rotate-6 transition-transform">
+                        <i class="fa-solid fa-vest text-2xl"></i>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold">Gym Accessories</h3>
+                    <p class="text-xs text-gray-400 mt-2">Lifting Belts, Straps & Resistance Bands.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS GRID (20 UNIQUE IMAGES & ANIMATED CARDS) -->
+    <section id="products" class="py-20 bg-gym-card/40 border-t border-gym-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-gym-neon font-bold text-xs uppercase tracking-widest">Bodybuilder Approved</span>
+                <h2 class="font-heading text-3xl sm:text-5xl font-black mt-1">UNIQUE GYM PRODUCTS</h2>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex justify-center items-center gap-3 flex-wrap mb-10">
+                <button onclick="filterProducts('all')"
+                    class="filter-btn active px-5 py-2 rounded-full text-xs font-bold bg-gym-neon text-black transition-all hover:scale-105">All
+                    Products</button>
+                <button onclick="filterProducts('weights')"
+                    class="filter-btn px-5 py-2 rounded-full text-xs font-bold glass-panel text-gray-400 hover:text-gym-neon transition-all">Weights</button>
+                <button onclick="filterProducts('supplements')"
+                    class="filter-btn px-5 py-2 rounded-full text-xs font-bold glass-panel text-gray-400 hover:text-gym-neon transition-all">Supplements</button>
+                <button onclick="filterProducts('machines')"
+                    class="filter-btn px-5 py-2 rounded-full text-xs font-bold glass-panel text-gray-400 hover:text-gym-neon transition-all">Machines</button>
+                <button onclick="filterProducts('accessories')"
+                    class="filter-btn px-5 py-2 rounded-full text-xs font-bold glass-panel text-gray-400 hover:text-gym-neon transition-all">Accessories</button>
+            </div>
+
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- 3D MACHINE INSPECTOR -->
+    <section id="tech-3d" class="py-20 border-t border-gym-border relative">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <span class="text-gym-neon font-bold text-xs uppercase tracking-widest">3D Equipment Viewer</span>
+            <h2 class="font-heading text-3xl sm:text-5xl font-black mt-1 mb-8">INSPECT GYM MACHINE 360°</h2>
+
+            <div
+                class="glass-panel p-8 rounded-3xl border border-gym-border relative flex flex-col items-center justify-center card-glow">
+                <div class="relative py-8">
+                    <img id="gym3dImg"
+                        src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&w=800&q=80"
+                        class="w-80 sm:w-96 md:w-[450px] object-contain transition-transform duration-100 filter drop-shadow-[0_10px_35px_rgba(204,255,0,0.3)]">
+                </div>
+
+                <div class="w-full max-w-md bg-gym-card border border-gym-border p-4 rounded-2xl backdrop-blur-md">
+                    <div class="flex justify-between text-[11px] font-mono text-gray-400 mb-2">
+                        <span>ROTATION: <span id="angleVal" class="text-gym-neon">0</span>°</span>
+                        <span>360° ROTATION MODE</span>
+                    </div>
+                    <input type="range" min="0" max="360" value="0" oninput="rotateMachine(this.value)"
+                        class="w-full accent-gym-neon cursor-pointer">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ATHLETE & TRAINER REVIEWS (6 CARDS) -->
+    <section id="reviews" class="py-20 border-t border-gym-border">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <span class="text-gym-neon font-bold text-xs uppercase tracking-widest">Real Feedback</span>
+            <h2 class="font-heading text-3xl sm:text-5xl font-black mt-1 mb-12">BODYBUILDERS & TRAINERS REVIEWS</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-gym-border space-y-4 hover:-translate-y-3 hover:border-gym-neon transition-all duration-300 card-glow">
+                    <div class="flex text-amber-400 text-xs"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-xs text-gray-300 italic">"5kg aur 10kg dumbbells ki grip bohot solid hai. Rubber
+                        coating ki waja se floor bhi safe rehta hai!"</p>
+                    <h4 class="font-bold text-xs text-gym-neon">- Ali Raza (Fitness Coach)</h4>
+                </div>
+
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-gym-border space-y-4 hover:-translate-y-3 hover:border-gym-neon transition-all duration-300 card-glow">
+                    <div class="flex text-amber-400 text-xs"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-xs text-gray-300 italic">"Whey Protein Isolation original 100% genuine hai. Result
+                        bohot tez mile hain bicep growth me."</p>
+                    <h4 class="font-bold text-xs text-gym-neon">- Usman Khan (Bodybuilder)</h4>
+                </div>
+
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-gym-border space-y-4 hover:-translate-y-3 hover:border-gym-neon transition-all duration-300 card-glow">
+                    <div class="flex text-amber-400 text-xs"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-xs text-gray-300 italic">"Commercial Heavy Treadmill machine order ki thi, 2 din me
+                        deliver ho gayi. Build quality 10/10!"</p>
+                    <h4 class="font-bold text-xs text-gym-neon">- Hamza Sheikh (Gym Owner)</h4>
+                </div>
+
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-gym-border space-y-4 hover:-translate-y-3 hover:border-gym-neon transition-all duration-300 card-glow">
+                    <div class="flex text-amber-400 text-xs"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-xs text-gray-300 italic">"Power Rack aur Bumper Plates ki quality international
+                        standard ki hai. Highly recommended!"</p>
+                    <h4 class="font-bold text-xs text-gym-neon">- Zeeshan Malik (Pro Athlete)</h4>
+                </div>
+
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-gym-border space-y-4 hover:-translate-y-3 hover:border-gym-neon transition-all duration-300 card-glow">
+                    <div class="flex text-amber-400 text-xs"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-xs text-gray-300 italic">"Pre-workout supplement se energy level next level ho jata
+                        hai heavy lifting ke doran."</p>
+                    <h4 class="font-bold text-xs text-gym-neon">- Bilal Ahmed (Crossfit Trainer)</h4>
+                </div>
+
+                <div
+                    class="glass-panel p-6 rounded-2xl border border-gym-border space-y-4 hover:-translate-y-3 hover:border-gym-neon transition-all duration-300 card-glow">
+                    <div class="flex text-amber-400 text-xs"><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-xs text-gray-300 italic">"Customer service aur delivery speed dono bohot zabardast
+                        hain. Titan Gym is the best!"</p>
+                    <h4 class="font-bold text-xs text-gym-neon">- Danish Farooq (Fitness Model)</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gym-card border-t border-gym-border pt-12 pb-6 text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <div class="flex items-center justify-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gym-neon text-black font-extrabold flex items-center justify-center">
+                    <i class="fa-solid fa-dumbbell"></i>
+                </div>
+                <span class="font-heading text-xl font-black text-gym-text">TITAN<span
+                        class="text-gym-neon">GYM</span></span>
+            </div>
+            <p>&copy; 2026 TITAN GYM Equipment & Supplements Inc. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
